@@ -1,0 +1,17 @@
+{
+  "name": "student",
+  "version": "1.0.0",
+  "description": "这是一个Mongoose结合Express有界面的增删改查小项目，MVC模式。",
+  "main": "index.js",
+  "scripts": {
+    "dev" : "node-dev ./views"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.0.2",
+    "express": "^4.17.1",
+    "formidable": "^1.2.2",
+    "mongoose": "^5.9.7"
+  }
+}
