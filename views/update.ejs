@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>学生管理界面</title>
+	<style type="text/css">
+		td{
+			width:100px;
+			height:20px;
+			text-align:center;
+		}	
+		.fuhe{
+			overflow: hidden;
+		}
+	</style>
+</head>
+<body>
+	<h1>学生管理 添加学生界面</h1>
+
+	<a href="/">所有学生</a>
+	<a href="/add">添加学生</a>
+
+	<p>学号</p>
+	<input type="text" name="sid" value="<%= info.sid %>" disabled />
+	<p class="fuhe">学号不符合</p>
+
+
+	<p>姓名</p>
+	<input type="text" name="name" value="<%= info.name %>" />
+
+	<p>年龄</p>
+	<input type="text" name="age" value="<%= info.age %>" />
+
+	<p>性别</p>
+	<label><input type="radio"  name="sex"  <% if(info.sex=='男'){ %> checked  <% } %>  value="男"/>男</label>
+	<label><input type="radio"  name="sex"  <% if(info.sex=='女'){ %> checked  <% } %> value="女"/>女</label>
+
+	<input type="button" value="提交" id="btn" />
+		
+
+
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<script type="text/javascript">
+		$('#btn').click(function(){
+			var  sid = parseInt($("input[name=sid]").val());
+			$.post("/student/"+sid,{
+				name  :  ($("input[name=name]").val()),
+				age  :  parseInt($("input[name=age]").val()),
+				sex  :  ($("input[name=sex]:checked").val()),
+			},function(data){
+				console.log(data);
+				if(data.result==1){
+					alert("修改成功");
+					window.location="/";
+				}else{
+					alert("服务器错误");
+				}
+			});
+		});
+
+		
+	</script>
+
+</body>
+</html>

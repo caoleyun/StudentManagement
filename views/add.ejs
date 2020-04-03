@@ -9,6 +9,9 @@
 			height:20px;
 			text-align:center;
 		}	
+		.fuhe{
+			overflow: hidden;
+		}
 	</style>
 </head>
 <body>
@@ -18,19 +21,69 @@
 	<a href="/add">添加学生</a>
 
 	<p>学号</p>
-	<input type="text" />
+	<input type="text" name="sid" />
+	<p class="fuhe">学号不符合</p>
 
 	<p>姓名</p>
-	<input type="text" />
+	<input type="text" name="name" />
 
 	<p>年龄</p>
-	<input type="text" />
+	<input type="text" name="age" />
 
 	<p>性别</p>
 	<label><input type="radio"  name="sex" value="男"/>男</label>
 	<label><input type="radio"  name="sex" value="女"/>女</label>
 
-	<input type="button" value="提交" />
+	<input type="button" value="提交" id="btn" />
 		
+
+
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<script type="text/javascript">
+		$('#btn').click(function(){
+			$.post("/student",{
+				sid  :  parseInt($("input[name=sid]").val()),
+				name  :  ($("input[name=name]").val()),
+				age  :  parseInt($("input[name=age]").val()),
+				sex  :  ($("input[name=sex]:checked").val()),
+			},function(data){
+				if(data.results==1){
+					alert("提交成功");
+					$("input[type=text]").val("");
+				}else if(data.results==-1){
+					alert("提交失败 学号被占用");
+				}else if(data.results==-2){
+					alert("服务器错误");
+				}
+			});
+		});
+
+		$("input[name=sid]").blur(function(){
+			var sid=parseInt($("input[name=sid]").val());
+			if(isNaN(sid)||!sid||!(sid>=100000&&sid<=999999)){
+				$(".fuhe").html("学号 不是6位数").show();
+				return;
+			}
+
+			$.ajax({
+				type    : "propfind" ,
+				url     : "/student/" + sid,
+				success : function(data){
+					if(!data.results){
+						$(".fuhe").html("学号被占用").show();
+					}else{
+						$(".fuhe").html("恭喜！可以使用！").show();
+					}
+				}
+			});
+
+		});
+
+		//得到焦点的时候，提示框消失
+	     $("input[name=sid]").focus(function(){
+	        $(".fuhe").hide();
+	    });
+	</script>
+
 </body>
 </html>
